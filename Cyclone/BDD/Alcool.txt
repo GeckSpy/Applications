@@ -1,9 +1,11 @@
+_|1|$A$, boit
 _|2|$A$, boit 2 gorgées
 _|4|$A$, boit 4 gorgées
-_|10|Cul Sec !
+_|6|$A$, fini ton verre
 g|2|$A$, donne 2 gorgées à qui tu veux
 g|4|$A$, donne 4 gorgées à qui tu veux
 g|1|ShiFouMi, celui qui perd boit
 _|2|$A$, boit une gorgée du verre de $B$
-g|1|La derniere personne à avoir fais du sport distribue 1 gorgée
-g|2|La derniere personne à avoir pisser sous la douche boit 2 gorgée
+g|1|La derniere personne à avoir fais du sport distribue 1 gorgées
+g|2|La derniere personne à avoir pisser sous la douche boit 2 gorgées
+g|4|La derniere personne à avoir reagrder Wankil distribue 4 gorgées

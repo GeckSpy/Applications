@@ -9,7 +9,7 @@ for (dirpath, dirnames, filenames) in walk(folder_path):
     for file_path in filenames:
         file = open(folder_path + '/' + file_path, "r")
         for lignes in file:
-            l = lignes.split('|')
+            l = lignes.replace("'", "$g$").split('|')
             sentence = "{'cat':'" + file_path[:-4] + "','type':'" + l[0] + "', 'shots':" + l[1] + ", 'text':'" +l[2][:-1] + "'}, "
             past_file.write(sentence)
         file.close()
