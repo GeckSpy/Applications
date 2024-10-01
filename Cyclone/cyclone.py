@@ -34,7 +34,7 @@ player2 = Player("Maëlle")
 player_list = [player1, player2]
 
 questions = []
-BDD_card = [{'cat':'Sport', 'shots':4, 'text':'$A$, fait 2 pompes'}, {'cat':'Alcool', 'shots':2, 'text':'$A$, boit 2 gorgées'}
+BDD_card = [{'cat':'Sport','type':'_', 'shots':4, 'text':'$A$, fait 2 pompes'}, {'cat':'Sport','type':'_', 'shots':8, 'text':'$A$, fait 5 pompes'}, {'cat':'Sport','type':'_', 'shots':2, 'text':'$A$, fait 3 squats'}, {'cat':'Sport','type':'_', 'shots':3, 'text':'$A$, fait une traction'}, {'cat':'Alcool','type':'_', 'shots':2, 'text':'$A$, boit 2 gorgées'}, {'cat':'Alcool','type':'_', 'shots':4, 'text':'$A$, boit 4 gorgées'}, {'cat':'Alcool','type':'_', 'shots':10, 'text':'Cul Sec !'}, {'cat':'Alcool','type':'_', 'shots':1, 'text':'$A$, donne 2 gorgées à qui tu veux'}, {'cat':'Alcool','type':'_', 'shots':3, 'text':'$A$, donne 4 gorgées à qui tu veux'}, {'cat':'Alcool','type':'g', 'shots':1, 'text':'ShiFouMi, celui qui perd boit'}, {'cat':'Alcool','type':'_', 'shots':2, 'text':'$A$, boit une gorgée du verre de $B$'}, {'cat':'Alcool','type':'g', 'shots':1, 'text':'La derniere personne à avoir fais du sport distribue 1 gorgée'}, {'cat':'Alcool','type':'g', 'shots':2, 'text':'La derniere personne à avoir pisser sous la douche boit 2 gorgé'}, {'cat':'Other','type':'_', 'shots':2, 'text':'$A$, échange de place avec $B$'}, {'cat':'Hot','type':'_', 'shots':2, 'text':'$A$, embrasse $B$'}, {'cat':'Hot','type':'_', 'shots':4, 'text':'$A$, monte sur les genoux de $B$ pendant 2 tours'}
             ]
 
 
@@ -47,6 +47,9 @@ nb_category = len(category)
 
 icon['Alcool'] = '🥃'
 icon['Sport'] = '💪'
+icon['Other'] = '😉'
+icon['Hot'] = '🫦'
+
 
 
 
@@ -102,8 +105,8 @@ ScreenManager:
         pos_hint: {'center_x':0.5, 'center_y':0.3}
         step: 2
         min: 2
-        max: 80
-        value: 40
+        max: root.numberOfCards()
+        value: min(root.numberOfCards(), 40)
 
     ElevatedWidget:
         pos_hint: {'center_x':0.5, 'center_y':0.12}
@@ -220,6 +223,7 @@ ScreenManager:
         md_bg_color: .2,.2,.2
 
     ElevatedWidget:
+        id: validated_button
         pos_hint: {'center_x':0.75, 'center_y':0.17}
         size_hint: 0.47,0.3
         elevation: 2
@@ -229,6 +233,7 @@ ScreenManager:
         on_press: root.checked()
     
     ElevatedWidget:
+        id: passed_button
         pos_hint: {'center_x':0.25, 'center_y':0.17}
         size_hint: 0.47,0.3
         elevation: 2
@@ -238,13 +243,15 @@ ScreenManager:
         on_press: root.passed()
 
     Label:
-        text: "X❌"
+        id: text_passed
+        text: ""
         pos_hint: {"x":0.2, "y":0.13}
         size_hint: 0.1,0.1
         font_size: "40sp"
 
     Label:
-        text: "\/✅"
+        id: text_validated
+        text: ""
         pos_hint: {"x":0.7, "y":0.13}
         size_hint: 0.1,0.1
         font_size: "40sp"
@@ -378,6 +385,9 @@ class MenuScreen(Screen):
     def playerName(self, id):
         return player_list[id].name
     
+    def numberOfCards(self):
+        return len(BDD_card)
+    
 
 has_init_settings_screen = False
 class SettingsScreen(Screen):
@@ -440,6 +450,7 @@ class GameScreen(Screen):
         self.id_card = -1
         self.card = None
         self.id_player = rd.randint(0,1)
+        self.is_game = False
 
     def initialize(self):
         self.id_card = -1
@@ -467,15 +478,29 @@ class GameScreen(Screen):
             self.ids.question_text.text = text
             self.ids.question_icon.text = icon[self.card['cat']]
             self.ids.question_shots.text = str(self.card['shots'])
+
+            if self.card['type'] == 'g':
+                self.is_game = True
+                self.ids.text_passed.text = player1.name
+                self.ids.text_validated.text = player2.name
+            else:
+                self.is_game = False
+                self.ids.text_passed.text = "X❌"
+                self.ids.text_validated.text = "\/✅"
         else:
             self.manager.current = 'end'
         
 
     def checked(self):
+        if self.is_game:
+            player2.shots += self.card['shots']
         self.actu()
 
     def passed(self):
-        player_list[self.id_player].shots += self.card['shots']
+        if self.is_game:
+            player1.shots += self.card['shots']
+        else:
+            player_list[self.id_player].shots += self.card['shots']
         self.actu()
         
 
