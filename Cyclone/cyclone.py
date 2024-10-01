@@ -14,6 +14,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.textfield import MDTextField
+from kivymd.uix.gridlayout import GridLayout
 
 import random as rd
 
@@ -25,13 +26,15 @@ class Player():
         self.name = name
         self.shots = 0
 
-player1 = Player("P1_name")
-player2 = Player("P2_name")
-id_player = 0
+    def reset(self):
+        self.shots = 0
+
+player1 = Player("Macéo")
+player2 = Player("Maëlle")
 player_list = [player1, player2]
 
 questions = []
-BDD_card = [{'cat':'Alcool', 'shots':2, 'text':'$A$ boit 2 gorgées'}, {'cat':'Jeux', 'shots':2, 'text':'Thème: les alcools'}
+BDD_card = [{'cat':'Sport', 'shots':4, 'text':'$A$, fait 2 pompes'}, {'cat':'Alcool', 'shots':2, 'text':'$A$, boit 2 gorgées'}
             ]
 
 
@@ -40,10 +43,15 @@ icon = {}
 for i in BDD_card:
     category[i['cat']] = True
     icon[i['cat']] = 'o'
+nb_category = len(category)
 
 icon['Alcool'] = '🥃'
+icon['Sport'] = '💪'
 
-validated = {True: 'Oui', False: 'Non'}
+
+
+BASIC_COLOR = [.2,.6,.1]
+WRONG_COLOR = [.9,.3,.1]
 
 # KV:
 KV = '''
@@ -51,6 +59,7 @@ ScreenManager:
     MenuScreen:
     SettingsScreen:
     GameScreen:
+    EndScreen:
 
 <MenuScreen>:
     id: menu_screen
@@ -60,7 +69,7 @@ ScreenManager:
         size_hint: 1, 1
         pos_hint: {'center_x':0.5, 'center_y':0.5}
         radius: 0
-        md_bg_color: .2,.2,.2
+        md_bg_color: .1,.1,.1
 
     MDCard:
         size_hint: 1, 0.15
@@ -91,7 +100,7 @@ ScreenManager:
         thumb_color_inactive: "red"
         size_hint: 0.8,0.5
         pos_hint: {'center_x':0.5, 'center_y':0.3}
-        step: 1
+        step: 2
         min: 2
         max: 80
         value: 40
@@ -120,7 +129,7 @@ ScreenManager:
         size_hint: 0.8, 0.15
         pos_hint: {'center_x':0.5, 'center_y':0.7}
         radius: 20
-        md_bg_color: .3,.3,.3
+        md_bg_color: .2,.2,.2
         elevation: 2
         shadow_offset: (0, -2)
     
@@ -137,7 +146,7 @@ ScreenManager:
         size_hint: 0.8, 0.15
         pos_hint: {'center_x':0.5, 'center_y':0.52}
         radius: 20
-        md_bg_color: .3,.3,.3
+        md_bg_color: .2,.2,.2
         elevation: 2
         shadow_offset: (0, -2)
     
@@ -161,7 +170,7 @@ ScreenManager:
         size_hint: 1, 1
         pos_hint: {'center_x':0.5, 'center_y':0.5}
         radius: 0
-        md_bg_color: .2,.2,.2
+        md_bg_color: .1,.1,.1
     
     MDRectangleFlatButton:
         text: "Back"
@@ -191,26 +200,154 @@ ScreenManager:
         font_size: "50sp"
 
     
-    ScrollView:
-        MDList:
-            id: category_list
         
 
 <GameScreen>:
     id: game_screen
     name: 'game'
+    on_enter: self.initialize()
 
     MDCard:
         size_hint: 1, 1
         pos_hint: {'center_x':0.5, 'center_y':0.5}
         radius: 0
+        md_bg_color: .1,.1,.1
+
+    MDCard:
+        size_hint: .85, .85
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        radius: 10
         md_bg_color: .2,.2,.2
 
+    ElevatedWidget:
+        pos_hint: {'center_x':0.75, 'center_y':0.17}
+        size_hint: 0.47,0.3
+        elevation: 2
+        radius: 18
+        shadow_offset: (2,-2)
+        md_bg_color: .15,.15,.15
+        on_press: root.checked()
+    
+    ElevatedWidget:
+        pos_hint: {'center_x':0.25, 'center_y':0.17}
+        size_hint: 0.47,0.3
+        elevation: 2
+        radius: 18
+        shadow_offset: (2,-2)
+        md_bg_color: .15,.15,.15
+        on_press: root.passed()
+
+    Label:
+        text: "X❌"
+        pos_hint: {"x":0.2, "y":0.13}
+        size_hint: 0.1,0.1
+        font_size: "40sp"
+
+    Label:
+        text: "\/✅"
+        pos_hint: {"x":0.7, "y":0.13}
+        size_hint: 0.1,0.1
+        font_size: "40sp"
+
+    MDLabel:
+        id: question_text
+        halign: 'center'
+        text: ""
+        pos_hint: {"center_x":0.5, "center_y":0.65}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "50sp"
+    
+    Label:
+        id: question_shots
+        text: "0"
+        halign: 'center'
+        pos_hint: {"center_x":0.85, "center_y":0.88}
+        size_hint: 0.1,0.1
+        font_size: "40sp"
+
+    Label:
+        id: question_icon
+        text: ""
+        halign: 'center'
+        pos_hint: {"center_x":0.15, "center_y":0.88}
+        size_hint: 0.1,0.1
+        font_size: "40sp"
+
+
+<EndScreen>:
+    id: end_screen
+    name: 'end'
+    on_enter: self.initialize()
+
+    MDCard:
+        size_hint: 1, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        radius: 0
+        md_bg_color: .1,.1,.1
+
+    MDRectangleFlatButton:
+        text: "Back"
+        pos_hint: {'left':1, 'top':1}
+        on_release:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'menu'
+
+    
+    MDCard:
+        size_hint: 0.8, 0.15
+        pos_hint: {'center_x':0.5, 'center_y':0.7}
+        radius: 20
+        md_bg_color: .2,.2,.2
+        elevation: 2
+        shadow_offset: (0, -2)
+
+    MDCard:
+        size_hint: 0.8, 0.15
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        radius: 20
+        md_bg_color: .2,.2,.2
+        elevation: 2
+        shadow_offset: (0, -2)
+
+    MDLabel:
+        id: j1_name
+        text: ""
+        halign: "center"
+        pos_hint: {'center_x':0.3, 'center_y':0.7}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "40sp"
+    
+    MDLabel:
+        id: j2_name
+        text: ""
+        halign: "center"
+        pos_hint: {'center_x':0.3, 'center_y':0.5}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "40sp"
+
+    MDLabel:
+        id: j1_shots
+        text: "0"
+        halign: "center"
+        pos_hint: {'center_x':0.8, 'center_y':0.7}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "40sp"
+
+    MDLabel:
+        id: j2_shots
+        text: "0"
+        halign: "center"
+        pos_hint: {'center_x':0.8, 'center_y':0.5}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "40sp"
 
 '''
 
-class ListItemWithCheckbox(OneLineAvatarIconListItem):
-    pass
 
 
 
@@ -242,7 +379,6 @@ class MenuScreen(Screen):
         return player_list[id].name
     
 
-
 has_init_settings_screen = False
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
@@ -252,27 +388,111 @@ class SettingsScreen(Screen):
         global has_init_settings_screen
         if not has_init_settings_screen:
             has_init_settings_screen = True
+            size_base = 0.85
+            size_y = 0.15
+            i=0
             for cat_name in category.keys():
-                self.ids.category_list.add_widget(ListItemWithCheckbox(
-                        id = cat_name,
-                        text = icon[cat_name] + ' ' + cat_name,
-                        on_release = self.selectCat
-                    )
-                )
+                hauteur = size_base -i*size_y
+                self.add_widget(ElevatedWidget(
+                    id= cat_name,
+                    pos_hint= {'center_x':0.5, 'center_y':hauteur},
+                    size_hint= [0.9, size_y-0.025],
+                    elevation= 2,
+                    md_bg_color= BASIC_COLOR,
+                    radius= 18,
+                    on_release= self.selectCat
+                ))
+                self.add_widget(MDLabel(
+                    text= icon[cat_name] + '   ' + cat_name,
+                    halign= "center",
+                    pos_hint= {'center_x':0.5, 'center_y':hauteur},
+                    theme_text_color= "Custom",
+                    text_color= "white",
+                    font_size= "50sp"
+                ))
+                i += 1
 
     def selectCat(self, box):
         category[box.id] = not category[box.id]
+        if category[box.id]:
+            box.md_bg_color = BASIC_COLOR
+        else:
+            box.md_bg_color = WRONG_COLOR
         print(category)
 
     def initGame(self):
         global id_player
+        global questions
+        questions = []
         id_player = rd.randint(0,1)
-    
+        for i in BDD_card:
+            if category[i['cat']]:
+                questions.append(i)
+        rd.shuffle(questions)
+        questions = questions[:nb_card]
+        print(questions)
+
     
 
 class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.id_card = -1
+        self.card = None
+        self.id_player = rd.randint(0,1)
+
+    def initialize(self):
+        self.id_card = -1
+        self.card = None
+        self.id_player = rd.randint(0,1)
+        self.actu()
+
+    def actu(self):
+        self.id_player = 1 - self.id_player
+        self.id_card += 1
+
+        if self.id_card < len(questions):
+            self.card = questions[self.id_card]
+
+            sentence = self.card['text'].split("$")
+            text = ""
+            for i in sentence:
+                if i == 'A':
+                    text += player_list[self.id_player].name
+                elif i == 'B':
+                    text += player_list[1-self.id_player].name
+                else:
+                    text += i
+
+            self.ids.question_text.text = text
+            self.ids.question_icon.text = icon[self.card['cat']]
+            self.ids.question_shots.text = str(self.card['shots'])
+        else:
+            self.manager.current = 'end'
+        
+
+    def checked(self):
+        self.actu()
+
+    def passed(self):
+        player_list[self.id_player].shots += self.card['shots']
+        self.actu()
+        
+
+
+
+class EndScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def initialize(self):
+        m = 0
+        if player_list[0].shots > player_list[1].shots:
+            m = 1
+        for i in range(0,2):
+            self.ids['j' + str(i+1) + '_name'].text = player_list[(i+m)%2].name
+            self.ids['j' + str(i+1) + '_shots'].text = str(player_list[(i+m)%2].shots)
+
 
 
 
@@ -280,6 +500,7 @@ sm = ScreenManager()
 sm.add_widget(MenuScreen(name='menu'))
 sm.add_widget(GameScreen(name='settings'))
 sm.add_widget(GameScreen(name='game'))
+sm.add_widget(GameScreen(name='end'))
 
 
 class MainApp(MDApp):
@@ -295,6 +516,8 @@ class MainApp(MDApp):
     def InitSettings(self, numbers_of_cards):
         global nb_card
         nb_card = numbers_of_cards
+        for i in player_list:
+            i.reset()
 
 
 ma = MainApp()

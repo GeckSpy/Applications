@@ -1,1 +1,1 @@
-{'cat':'Alcool', 'shots':2, 'text':'$A$ boit 2 gorgées'}, {'cat':'Jeux', 'shots':2, 'text':'Thème: les alcools'}, 
+{'cat':'Sport', 'shots':4, 'text':'$A$, fait 2 pompes'}, {'cat':'Alcool', 'shots':2, 'text':'$A$, boit 2 gorgées'}, 
