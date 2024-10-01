@@ -30,6 +30,7 @@ class check_box(GridLayout):
         self.add_widget(self.active)
 
     
+    
 class CBApp(App):
     def build(self):
         return check_box()
