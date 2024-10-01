@@ -3,3 +3,6 @@ _|6|$A$, tu es au ordre de $B$ pendant un tour
 _|2|$A$, $B$, faites vous un calin
 _|6|$A$, prends la place la plus incomfortable
 g|1|$A$, raconte une anecdote vraie ou fausse, si $B$ devine correctement tu bois, sinon c'est $B$
+_|1|$A$, donne un ordre à $B$ (dans les limites du respects)
+_|4|$B$ te donne un ordre
+_|4|$A$, fais un dessin (en 30 secondes)

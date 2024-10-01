@@ -4,14 +4,14 @@ _|2|$A$, embrasse le coup $B$
 _|1|$A$, mordille l'oreille de $B$
 _|3|$A$, embrasse la nuque de $B$
 _|4|$A$, monte sur les genoux de $B$ pendant 2 tours
-_|2|$A$, fait embrasse le ventre de $B$
+_|1|$A$, fait embrasse le ventre de $B$
 _|6|$A$, fais toi léchouiller par $B$
 _|5|$A$, enleve un vetement
 _|5|$A$, enleve un vetement
-_|6|$A$, enleve ton haut
-_|7|$A$, enleve ton bas
-_|7|$A$, enleve tes sous vetements
+_|4|$A$, enleve ton haut
+_|4|$A$, enleve ton bas
+_|6|$A$, enleve tes sous vetements
 _|8|$B$, enleve autant de vetement que tu veux, $A$ doit en enlever autant
 _|5|$B$ choisi un vetemnt que $A$ doit enlever
-_|4|$B$ choisi un endroit que $A$ doit embrasser
+_|2|$B$ choisi un endroit que $A$ doit embrasser
 g|1|$A$, raconte une anecdote sexuel vraie ou fausse, si $B$ devine correctement tu bois, sinon c'est $B$
