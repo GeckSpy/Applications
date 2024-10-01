@@ -1,20 +1,14 @@
 from kivy.uix.screenmanager import Screen,ScreenManager
-from kivy.uix.widget import Widget
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.clock import Clock
-from kivy.properties import StringProperty
 
 from kivymd.app import MDApp
-from kivymd.uix.behaviors import BackgroundColorBehavior, CommonElevationBehavior, RectangularRippleBehavior
+from kivymd.uix.behaviors import CommonElevationBehavior, RectangularRippleBehavior
 from kivymd.uix.widget import MDWidget
 from kivymd.uix.label import MDLabel
-from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch
-from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.gridlayout import GridLayout
 
 import random as rd
 
