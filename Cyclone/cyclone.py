@@ -428,7 +428,7 @@ class SettingsScreen(Screen):
             box.md_bg_color = BASIC_COLOR
         else:
             box.md_bg_color = WRONG_COLOR
-        print(category)
+        # print(category)
 
     def initGame(self):
         global id_player
@@ -440,7 +440,7 @@ class SettingsScreen(Screen):
                 questions.append(i)
         rd.shuffle(questions)
         questions = questions[:nb_card]
-        print(questions)
+        # print(questions)
 
     
 
