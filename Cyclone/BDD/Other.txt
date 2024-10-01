@@ -2,3 +2,4 @@ _|2|$A$, échange de place avec $B$
 _|6|$A$, tu es au ordre de $B$ pendant un tour
 _|2|$A$, $B$, faites vous un calin
 _|6|$A$, prends la place la plus incomfortable
+g|1|$A$, raconte une anecdote vraie ou fausse, si $B$ devine correctement tu bois, sinon c'est $B$

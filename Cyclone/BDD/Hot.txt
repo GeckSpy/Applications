@@ -14,3 +14,4 @@ _|7|$A$, enleve tes sous vetements
 _|8|$B$, enleve autant de vetement que tu veux, $A$ doit en enlever autant
 _|5|$B$ choisi un vetemnt que $A$ doit enlever
 _|4|$B$ choisi un endroit que $A$ doit embrasser
+g|1|$A$, raconte une anecdote sexuel vraie ou fausse, si $B$ devine correctement tu bois, sinon c'est $B$
