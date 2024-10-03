@@ -23,8 +23,8 @@ class Player():
     def reset(self):
         self.shots = 0
 
-player1 = Player("Macéo")
-player2 = Player("Maëlle")
+player1 = Player("J1")
+player2 = Player("J2")
 player_list = [player1, player2]
 
 questions = []
@@ -61,7 +61,11 @@ ScreenManager:
 <MenuScreen>:
     id: menu_screen
     name: 'menu'
-
+    
+    MDLabel:
+        id: initializer
+        text: root.initialize()
+    
     MDCard:
         size_hint: 1, 1
         pos_hint: {'center_x':0.5, 'center_y':0.5}
@@ -69,7 +73,7 @@ ScreenManager:
         md_bg_color: .1,.1,.1
 
     MDCard:
-        size_hint: 1, 0.15
+        size_hint: 1, 0.1
         pos_hint: {'center_x':0.5, 'center_y':0.925}
         radius: 0
         md_bg_color: .2,.6,1
@@ -84,6 +88,67 @@ ScreenManager:
         text_color: "white"
         font_size: "30sp"
  
+
+    ElevatedWidget:
+        pos_hint: {'center_x':0.5, 'center_y':0.12}
+        size_hint: 0.9,0.2
+        elevation: 2
+        md_bg_color: .2,.6,1
+        radius: 18
+        on_release:
+            root.initSettings()
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'settings'
+    
+    MDLabel:
+        text: "Play"
+        halign: "center"
+        pos_hint: {'center_x':0.5, 'center_y':0.12}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "50sp"
+    
+
+        
+
+<SettingsScreen>:
+    id: settings_screen
+    name: 'settings'
+    on_enter: self.initialize()
+
+    MDCard:
+        size_hint: 1, 1
+        pos_hint: {'center_x':0.5, 'center_y':0.5}
+        radius: 0
+        md_bg_color: .1,.1,.1
+    
+    MDRectangleFlatButton:
+        text: "Back"
+        pos_hint: {'left':1, 'top':1}
+        on_release:
+            root.manager.transition.direction = 'right'
+            root.manager.current = 'menu'
+
+    ElevatedWidget:
+        pos_hint: {'center_x':0.5, 'center_y':0.12}
+        size_hint: 0.9,0.2
+        elevation: 2
+        md_bg_color: .2,.6,1
+        radius: 18
+        on_release:
+            root.initGame(slider_cards.value)
+            root.manager.transition.direction = 'left'
+            root.manager.current = 'game'
+    
+    MDLabel:
+        id: play_text
+        text: "Play"
+        halign: "center"
+        pos_hint: {'center_x':0.5, 'center_y':0.12}
+        theme_text_color: "Custom"
+        text_color: "white"
+        font_size: "50sp"
+
     MDLabel:
         text: "Number of cards"
         halign: "center"
@@ -99,29 +164,9 @@ ScreenManager:
         pos_hint: {'center_x':0.5, 'center_y':0.3}
         step: 2
         min: 2
-        max: root.numberOfCards()
-        value: min(root.numberOfCards(), 40)
+        max: 4
+        value: 2
 
-    ElevatedWidget:
-        pos_hint: {'center_x':0.5, 'center_y':0.12}
-        size_hint: 0.9,0.2
-        elevation: 2
-        md_bg_color: .2,.6,1
-        radius: 18
-        on_release:
-            app.InitSettings(slider_cards.value)
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'settings'
-    
-    MDLabel:
-        text: "Play"
-        halign: "center"
-        pos_hint: {'center_x':0.5, 'center_y':0.12}
-        theme_text_color: "Custom"
-        text_color: "white"
-        font_size: "50sp"
-    
-        
     MDCard:
         size_hint: 0.8, 0.15
         pos_hint: {'center_x':0.5, 'center_y':0.7}
@@ -155,46 +200,6 @@ ScreenManager:
         theme_text_color: "Custom"
         text_color: "white"
         font_size: "40sp"
-
-        
-
-<SettingsScreen>:
-    id: settings_screen
-    name: 'settings'
-    on_enter: self.initialize()
-
-    MDCard:
-        size_hint: 1, 1
-        pos_hint: {'center_x':0.5, 'center_y':0.5}
-        radius: 0
-        md_bg_color: .1,.1,.1
-    
-    MDRectangleFlatButton:
-        text: "Back"
-        pos_hint: {'left':1, 'top':1}
-        on_release:
-            root.manager.transition.direction = 'right'
-            root.manager.current = 'menu'
-
-    ElevatedWidget:
-        pos_hint: {'center_x':0.5, 'center_y':0.12}
-        size_hint: 0.9,0.2
-        elevation: 2
-        md_bg_color: .2,.6,1
-        radius: 18
-        on_release:
-            root.initGame()
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'game'
-    
-    MDLabel:
-        id: play_text
-        text: "Play"
-        halign: "center"
-        pos_hint: {'center_x':0.5, 'center_y':0.12}
-        theme_text_color: "Custom"
-        text_color: "white"
-        font_size: "50sp"
 
     
         
@@ -368,31 +373,16 @@ class ElevatedWidget(CommonElevationBehavior, RectangularRippleBehavior,
 
 
 
+has_init_settings_screen = False
 class MenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def initialize(self):
-        self.ids.j1_name.text = player1.name
-        self.ids.j2_name.text = player2.name
-
-    def playerName(self, id):
-        return player_list[id].name
-    
-    def numberOfCards(self):
-        return len(BDD_card)
-    
-
-has_init_settings_screen = False
-class SettingsScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-    
-    def initialize(self):
         global has_init_settings_screen
         if not has_init_settings_screen:
             has_init_settings_screen = True
-            size_base = 0.85
+            size_base = 0.78
             size_y = 0.15
             i=0
             for cat_name in category.keys():
@@ -415,6 +405,7 @@ class SettingsScreen(Screen):
                     font_size= "50sp"
                 ))
                 i += 1
+        return " "
 
     def selectCat(self, box):
         category[box.id] = not category[box.id]
@@ -422,19 +413,42 @@ class SettingsScreen(Screen):
             box.md_bg_color = BASIC_COLOR
         else:
             box.md_bg_color = WRONG_COLOR
-        # print(category)
+        print(category)
 
-    def initGame(self):
-        global id_player
+    
+    def initSettings(self):
+        for i in player_list:
+            i.reset()
+
         global questions
         questions = []
-        id_player = rd.randint(0,1)
         for i in BDD_card:
             if category[i['cat']]:
                 questions.append(i)
         rd.shuffle(questions)
+    
+    
+class SettingsScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    
+    def initialize(self):
+        global questions
+        self.ids.slider_cards.max = len(questions)
+        self.ids.slider_cards.value = min(len(questions), 40)
+        return len(questions)
+
+    def initGame(self, nb_of_card):
+        global nb_card
+        nb_card = nb_of_card
+        global id_player
+        global questions
+        id_player = rd.randint(0,1)
         questions = questions[:nb_card]
         # print(questions)
+    
+    def playerName(self, id):
+        return player_list[id].name
 
     
 
@@ -534,11 +548,6 @@ class MainApp(MDApp):
         screen.add_widget(self.kvs)
         return screen
     
-    def InitSettings(self, numbers_of_cards):
-        global nb_card
-        nb_card = numbers_of_cards
-        for i in player_list:
-            i.reset()
 
 
 ma = MainApp()
