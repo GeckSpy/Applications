@@ -6,3 +6,13 @@ g|1|$A$, raconte une anecdote vraie ou fausse, si $B$ devine correctement tu boi
 _|1|$A$, donne un ordre à $B$ (dans les limites du respects)
 _|4|$B$ te donne un ordre
 _|4|$A$, fais un dessin (en 30 secondes)
+_|5|$A$, propose une activité pour nous un jour
+_|4|$A$, organise un date !
+_|2|Laisse $B$ te lancer un action ou verité
+_|2|Laisse $B$ te lancer un action ou verité
+_|2|Laisse $B$ te lancer un action ou verité
+_|2|Laisse $B$ te lancer un action ou verité
+_|7|$A$, ferme les yeux pendant 2 tours et ai confiance en l'autre
+_|4|Laisse $B$ te lancer un pour combien
+_|4|Laisse $B$ te lancer un pour combien
+_|4|Laisse $B$ te lancer un pour combien
